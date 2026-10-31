@@ -36,6 +36,21 @@ class Store {
             ...seed.invoiceSettings,
             ...(parsed.invoiceSettings || {}),
           },
+          albums: Array.isArray(parsed.albums) ? parsed.albums : seed.albums,
+          sessionAlbums: {
+            ...seed.sessionAlbums,
+            ...(parsed.sessionAlbums || {}),
+          },
+          driveConfig: {
+            ...seed.driveConfig,
+            ...(parsed.driveConfig || {}),
+            rootFolderId:
+              parsed.driveConfig?.rootFolderId?.trim() || '1Wvv1jQdaizAOwTc9LZ9JEutwbLj1FQeN',
+            classFolderIds: {
+              ...seed.driveConfig.classFolderIds,
+              ...(parsed.driveConfig?.classFolderIds || {}),
+            },
+          },
         };
       }
     } catch (e) {

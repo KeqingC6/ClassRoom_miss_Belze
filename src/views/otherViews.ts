@@ -151,6 +151,7 @@ export function applyAppearancePreferences(): void {
   const ft = prefs.featureToggles;
   const navLogs = document.getElementById('nav-logs');
   const navScores = document.getElementById('nav-scores');
+  const navAlbum = document.getElementById('nav-album');
   const navAssistants = document.getElementById('nav-assistants');
   if (navLogs) {
     navLogs.toggleAttribute('hidden', !ft.learningJournal);
@@ -159,6 +160,11 @@ export function applyAppearancePreferences(): void {
   if (navScores) {
     navScores.toggleAttribute('hidden', !ft.scores);
     navScores.style.display = ft.scores ? 'flex' : 'none';
+  }
+  if (navAlbum) {
+    const showAlbum = ft.album !== false;
+    navAlbum.toggleAttribute('hidden', !showAlbum);
+    navAlbum.style.display = showAlbum ? 'flex' : 'none';
   }
   if (navAssistants) {
     navAssistants.toggleAttribute('hidden', !ft.assistants);

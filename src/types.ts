@@ -5,6 +5,7 @@ export type ViewId =
   | 'view-tuition'
   | 'view-student-class-hub'
   | 'view-scores-v2'
+  | 'view-album'
   | 'view-feedback'
   | 'view-subscription-renewal'
   | 'view-user-guide'
@@ -188,6 +189,7 @@ export interface AppPreferences {
     sessionFees: boolean;
     learningJournal: boolean;
     scores: boolean;
+    album?: boolean;
     tuitionTrend: boolean;
     tuitionSurcharges: boolean;
     tuitionDiscounts: boolean;
@@ -198,6 +200,44 @@ export interface AppPreferences {
   calendarDisplayEnd: string;
   calendarShowSessionPrices: boolean;
   calendarShowAttendanceTag: boolean;
+}
+
+export interface AlbumPhoto {
+  id: string;
+  classKey: string;
+  sessionId: string;
+  name: string;
+  caption: string;
+  studentIds: string[];
+  driveFileId?: string;
+  driveWebViewLink?: string;
+  driveThumbnailUrl?: string;
+  dataUrl?: string;
+  mimeType: string;
+  createdAt: string;
+  syncStatus: 'synced' | 'local' | 'external_drive';
+}
+
+export interface SessionAlbumMeta {
+  sessionId: string;
+  classKey: string;
+  driveFolderId?: string;
+  driveFolderUrl?: string;
+  coverPhotoId?: string;
+  albumNote?: string;
+}
+
+export interface GoogleDriveConfig {
+  mode: 'apps_script' | 'oauth';
+  scriptWebAppUrl: string;
+  rootFolderId: string;
+  rootFolderName: string;
+  oauthClientId: string;
+  oauthAccessToken: string;
+  connectedEmail: string;
+  autoSync: boolean;
+  lastSyncedAt: string;
+  classFolderIds: Record<string, string>;
 }
 
 export interface AppState {
@@ -218,6 +258,9 @@ export interface AppState {
   sessions: ClassSession[];
   scores: ScoreRecord[];
   scorePresets: ScorePreset[];
+  albums: AlbumPhoto[];
+  sessionAlbums: Record<string, SessionAlbumMeta>;
+  driveConfig: GoogleDriveConfig;
   tuitionStatuses: Record<string, TuitionStatusValue>; // key: `${studentId}_${month}_${classKey}`
   payments: TuitionPayment[];
   prepayments: ClassPrepayment[];

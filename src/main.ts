@@ -12,6 +12,7 @@ import {
   shiftMonth,
   showToast,
 } from './utils';
+import { bindAlbumEvents, renderAlbumView } from './views/album';
 import { bindClassHubEvents, renderClassHubView } from './views/classHub';
 import { bindDashboardEvents, renderDashboardView } from './views/dashboard';
 import { bindLogsEvents, renderLogsView } from './views/logs';
@@ -84,6 +85,14 @@ const VIEW_METADATA: Record<ViewId, ViewMeta> = {
     showCreateSessionBtn: false,
     showGuideRunBtn: false,
   },
+  'view-album': {
+    title: 'ALBUM LỚP & BUỔI HỌC',
+    subtitle: 'Lưu trữ hình ảnh bảng ghi, vở bài tập theo từng lớp và từng buổi học trên Google Drive cá nhân.',
+    urlParam: 'album',
+    showMonthPicker: true,
+    showCreateSessionBtn: false,
+    showGuideRunBtn: false,
+  },
   'view-users': {
     title: 'TRỢ GIẢNG',
     subtitle: 'Tạo tài khoản trợ giảng và chọn chính xác những phần được xem, được thao tác.',
@@ -131,6 +140,8 @@ function parseViewFromUrl(): ViewId | null {
     'student-class-hub': 'view-student-class-hub',
     'scores-v2': 'view-scores-v2',
     scores: 'view-scores-v2',
+    album: 'view-album',
+    albums: 'view-album',
     users: 'view-users',
     assistants: 'view-users',
     feedback: 'view-feedback',
@@ -266,6 +277,7 @@ function renderAllViews(): void {
   renderDashboardView();
   renderLogsView();
   renderScoresView();
+  renderAlbumView();
   renderSchedulerView();
   renderClassHubView();
   renderTuitionView();
@@ -508,6 +520,7 @@ function initApp(): void {
   bindDashboardEvents(navigateToView);
   bindLogsEvents();
   bindScoresEvents();
+  bindAlbumEvents();
   bindSchedulerEvents();
   bindClassHubEvents();
   bindTuitionEvents();

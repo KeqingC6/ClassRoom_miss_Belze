@@ -102,6 +102,13 @@
  <svg class=menu-icon viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=1.8 stroke-linecap=round stroke-linejoin=round aria-hidden=true><path d="M6 20V12M12 20V5M18 20V9"></path></svg>
  <span>Điểm số</span>
  </a>
+<!-- ALBUM_NAV_START -->
+ <a href=# class="menu-item mobile-nav-visible" data-target=view-album id=nav-album data-sidebar-navigation-bound=true style=display:flex>
+ <svg class=menu-icon viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=1.8 stroke-linecap=round stroke-linejoin=round aria-hidden=true><rect x=3 y=4 width=18 height=16 rx=2.5></rect><circle cx=8.5 cy=9.5 r=1.6></circle><path d="m21 15-4.8-4.8a1.5 1.5 0 0 0-2.1 0L6 18.3"></path></svg>
+ <span>Album ảnh</span>
+ </a>
+ <!-- ALBUM_NAV_END -->
+
  <a href=# class="menu-item feature-hidden" data-target=view-requests id=nav-requests data-sidebar-navigation-bound=true hidden style=display:none>
  <svg class=menu-icon viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round aria-hidden=true><rect x=4 y=3 width=16 height=18 rx=2></rect><path d="M8 8h8M8 12h5M8 16h4"></path><path d="m15 16 1.5 1.5L20 14"></path></svg>
  
@@ -1470,6 +1477,35 @@
  <div class="user-account-pagination " id=userAccountPagination aria-label="Phân trang tài khoản" hidden></div>
  </div>
  </section>
+
+<!-- ALBUM_VIEW_START -->
+<section id="view-album" class="view-section" hidden>
+  <div class="sv2-layout album-layout" id="albumViewRoot">
+    <aside class="sv2-sidebar album-sidebar glass-card" aria-label="Chọn lớp và buổi học cho Album">
+      <div id="albumDriveStatusCard" class="album-drive-status-card"></div>
+
+      <div class="album-month-mode-tabs" role="tablist" aria-label="Phạm vi buổi học">
+        <button type="button" class="is-active" data-album-month-mode="all">Tất cả các buổi</button>
+        <button type="button" data-album-month-mode="selected">Theo tháng đang chọn</button>
+      </div>
+
+      <div class="sv2-choices">
+        <label class="sv2-search">
+          <svg class="sv2-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="10.5" cy="10.5" r="6.5"></circle>
+            <path d="m16 16 5 5"></path>
+          </svg>
+          <span class="sv2-sr">Tìm lớp hoặc buổi học</span>
+          <input type="search" id="albumSidebarSearch" placeholder="Tìm lớp, ngày hoặc buổi học..." autocomplete="off">
+        </label>
+        <div class="sv2-roster" id="albumClassRoster"></div>
+      </div>
+    </aside>
+
+    <div class="album-main" id="albumMainContent"></div>
+  </div>
+</section>
+<!-- ALBUM_VIEW_END -->
 <template id=privilegedViewMount></template>
  </main>
  <div class=modal-backdrop id=classBillingPaymentModal aria-hidden=true inert>
@@ -3144,6 +3180,174 @@
  </form>
  </div>
  </div>
+
+<!-- ALBUM_MODALS_START -->
+<div class="modal-backdrop" id="albumLightboxModal" aria-hidden="true">
+  <div class="modal-container" style="max-width:960px;width:94vw" role="dialog" aria-labelledby="albumLightboxTitle" tabindex="-1">
+    <div class="modal-header">
+      <div>
+        <h3 class="modal-title" id="albumLightboxTitle">Xem ảnh</h3>
+        <p class="class-setup-subtitle" id="albumLightboxMeta" style="margin:4px 0 0;font-size:12px;color:var(--text-muted)"></p>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span id="albumLightboxCounter" style="font-size:12px;font-weight:700;color:var(--text-muted)">1 / 1</span>
+        <button type="button" class="modal-close" aria-label="Đóng">×</button>
+      </div>
+    </div>
+    <div class="modal-body" style="padding:14px 18px">
+      <div class="album-lightbox-stage">
+        <button type="button" class="album-lightbox-nav is-prev" id="albumLightboxPrev" title="Ảnh trước (←)">‹</button>
+        <img id="albumLightboxImage" src="" alt="Xem ảnh phóng to">
+        <button type="button" class="album-lightbox-nav is-next" id="albumLightboxNext" title="Ảnh tiếp theo (→)">›</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" target="_blank" rel="noopener" class="btn btn-secondary" id="albumLightboxDriveLink" hidden>🔗 Mở trên Google Drive</a>
+      <button type="button" class="btn btn-secondary" id="albumLightboxEditBtn">✏️ Sửa chú thích &amp; Gắn thẻ HS</button>
+      <button type="button" class="btn btn-secondary">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="albumPhotoEditModal" aria-hidden="true">
+  <div class="modal-container" style="max-width:540px" role="dialog" aria-labelledby="albumPhotoEditModalTitle" tabindex="-1">
+    <div class="modal-header">
+      <div>
+        <h3 class="modal-title" id="albumPhotoEditModalTitle">Chỉnh sửa thông tin ảnh &amp; Gắn thẻ học sinh</h3>
+      </div>
+      <button type="button" class="modal-close" aria-label="Đóng">×</button>
+    </div>
+    <form id="albumPhotoEditForm">
+      <div class="modal-body" style="display:flex;flex-direction:column;gap:12px">
+        <div class="form-group">
+          <label for="albumEditPhotoName">Tên file ảnh</label>
+          <input type="text" id="albumEditPhotoName" class="form-control" placeholder="Ví dụ: Bang-ghi-Unit-4.jpg">
+        </div>
+        <div class="form-group">
+          <label for="albumEditPhotoCaption">Chú thích / Nội dung ảnh trong buổi học</label>
+          <textarea id="albumEditPhotoCaption" class="form-control" rows="3" placeholder="Nhập chú thích cho ảnh này (ví dụ: Bảng ghi cấu trúc ngữ pháp, vở bài tập của học sinh...)"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Học sinh liên quan trong ảnh (Phục vụ lọc nhanh theo học sinh)</label>
+          <div id="albumEditPhotoStudentList" class="album-student-check-grid"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary">Hủy</button>
+        <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="albumAddDriveLinkModal" aria-hidden="true">
+  <div class="modal-container" style="max-width:560px" role="dialog" aria-labelledby="albumAddDriveLinkModalTitle" tabindex="-1">
+    <div class="modal-header">
+      <div>
+        <h3 class="modal-title" id="albumAddDriveLinkModalTitle">🔗 Gắn link ảnh từ Google Drive</h3>
+        <p class="class-setup-subtitle" style="margin:4px 0 0;font-size:12px;color:var(--text-muted)">Dán một hoặc nhiều link chia sẻ file ảnh trên Google Drive của bạn (mỗi dòng 1 link).</p>
+      </div>
+      <button type="button" class="modal-close" aria-label="Đóng">×</button>
+    </div>
+    <form id="albumAddDriveLinkForm">
+      <div class="modal-body" style="display:flex;flex-direction:column;gap:12px">
+        <div class="form-group">
+          <label for="albumDriveLinksTextarea">Danh sách link ảnh Google Drive (hoặc File ID)</label>
+          <textarea id="albumDriveLinksTextarea" class="form-control" rows="4" placeholder="https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/view?usp=sharing&#10;https://drive.google.com/open?id=..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="albumDriveLinkCaption">Chú thích chung cho ảnh (tùy chọn)</label>
+          <input type="text" id="albumDriveLinkCaption" class="form-control" placeholder="Ví dụ: Ảnh chụp vở bài tập trên lớp...">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary">Hủy</button>
+        <button type="submit" class="btn btn-primary">Thêm vào Album buổi học</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="albumDriveConfigModal" aria-hidden="true">
+  <div class="modal-container" style="max-width:680px" role="dialog" aria-labelledby="albumDriveConfigModalTitle" tabindex="-1">
+    <div class="modal-header">
+      <div>
+        <h3 class="modal-title" id="albumDriveConfigModalTitle">☁️ Kết nối Google Drive cá nhân làm Database</h3>
+        <p class="class-setup-subtitle" style="margin:4px 0 0;font-size:12px;color:var(--text-muted)">
+          Tự động phân cấp thư mục <strong>Tên Lớp Học → Từng Buổi Học</strong> và lưu trữ toàn bộ ảnh + file dữ liệu <code>nttclass_albums_db.json</code> ngay trên Google Drive của chính bạn.
+        </p>
+      </div>
+      <button type="button" class="modal-close" aria-label="Đóng">×</button>
+    </div>
+    <form id="albumDriveConfigForm">
+      <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;max-height:72vh;overflow-y:auto">
+        <div class="form-group">
+          <label for="driveConfigMode">Phương thức kết nối Google Drive</label>
+          <select id="driveConfigMode" class="form-control">
+            <option value="apps_script">Cách 1: Google Apps Script Bridge (Khuyên dùng - Miễn phí 100%, không cần xác minh OAuth phức tạp, chạy mọi nơi)</option>
+            <option value="oauth">Cách 2: Google Drive REST API v3 trực tiếp (OAuth 2.0 Client ID / Access Token)</option>
+          </select>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="form-group">
+            <label for="driveRootFolderName">Tên thư mục gốc trên Google Drive</label>
+            <input type="text" id="driveRootFolderName" class="form-control" placeholder="NTTCLASS_ALBUMS" value="NTTCLASS_ALBUMS">
+          </div>
+          <div class="form-group">
+            <label for="driveRootFolderId">Folder ID hoặc Link Thư mục gốc</label>
+            <input type="text" id="driveRootFolderId" class="form-control" placeholder="1Wvv1jQdaizAOwTc9LZ9JEutwbLj1FQeN" value="1Wvv1jQdaizAOwTc9LZ9JEutwbLj1FQeN">
+          </div>
+        </div>
+
+        <div id="driveAppsScriptPanel" style="display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:color-mix(in srgb,var(--primary-soft) 38%,var(--card-bg))">
+          <div class="form-group">
+            <label for="driveScriptWebAppUrl"><strong>URL Web App Google Apps Script của bạn</strong></label>
+            <input type="url" id="driveScriptWebAppUrl" class="form-control" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+          </div>
+          <div style="font-size:11.5px;line-height:1.5;color:var(--text-main)">
+            <strong>Hướng dẫn tạo cầu nối trên chính Google Drive của bạn (chỉ làm 1 lần duy nhất - mất 1 phút):</strong>
+            <ol style="margin:6px 0 8px 18px;padding:0">
+              <li>Bấm nút <strong>📋 Sao chép mã Google Apps Script</strong> bên dưới.</li>
+              <li>Mở <a href="https://script.google.com" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700">https://script.google.com</a> → Bấm <strong>Dự án mới (New project)</strong> → Dán mã vừa chép đè lên mã cũ và bấm Lưu (Ctrl+S).</li>
+              <li>Bấm nút <strong>Triển khai (Deploy)</strong> ở góc trên bên phải → <strong>Tạo mục triển khai mới (New deployment)</strong>.</li>
+              <li>Chọn loại <strong>Ứng dụng web (Web app)</strong>, mục <em>Ai có quyền truy cập</em> chọn <strong>Bất kỳ ai (Anyone)</strong> → Bấm <strong>Triển khai</strong> → Copy <strong>URL ứng dụng web</strong> dán vào ô trên!</li>
+            </ol>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <span style="font-weight:700;color:var(--primary)">Mã nguồn Google Apps Script (Chạy trên tài khoản Google của bạn):</span>
+              <button type="button" class="btn btn-secondary btn-sm" id="copyAppsScriptCodeBtn">📋 Sao chép mã Google Apps Script</button>
+            </div>
+            <textarea id="driveAppsScriptCodeBox" class="form-control" rows="6" readonly style="font-family:monospace;font-size:11px"></textarea>
+          </div>
+        </div>
+
+        <div id="driveOauthPanel" hidden style="display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:color-mix(in srgb,var(--primary-soft) 38%,var(--card-bg))">
+          <div class="form-group">
+            <label for="driveOauthClientId">Google Cloud OAuth 2.0 Client ID (Tùy chọn nếu muốn đăng nhập bằng nút Popup)</label>
+            <div style="display:flex;gap:8px">
+              <input type="text" id="driveOauthClientId" class="form-control" placeholder="xxxx-xxxx.apps.googleusercontent.com">
+              <button type="button" class="btn btn-secondary btn-sm" id="driveOauthSignInBtn" style="white-space:nowrap">🔑 Đăng nhập Google</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="driveOauthAccessToken">OAuth 2.0 Access Token (Quyền <code>drive.file</code> hoặc <code>drive</code>)</label>
+            <input type="password" id="driveOauthAccessToken" class="form-control" placeholder="ya29.a0AfH6SM...">
+          </div>
+        </div>
+
+        <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;cursor:pointer">
+          <input type="checkbox" id="driveAutoSyncCheck" checked>
+          <span>Tự động đẩy ảnh mới và cập nhật file Database (<code>nttclass_albums_db.json</code>) lên Google Drive ngay khi tải ảnh</span>
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary">Đóng</button>
+        <button type="submit" class="btn btn-primary">💾 Lưu cấu hình &amp; Đồng bộ ngay</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- ALBUM_MODALS_END -->
 <template id=privilegedModalMount></template>
 
 <div id=calendarContextMenu class="calendar-context-menu " role=menu hidden data-bound=true></div>

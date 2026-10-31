@@ -350,6 +350,114 @@ export function createInitialSeedState(): AppState {
       { id: 'preset_2', name: 'KTTX', maxScore: 10 },
       { id: 'preset_3', name: 'Giữa kỳ', maxScore: 10 },
     ],
+    albums: [
+      {
+        id: 'photo_seed_1',
+        classKey: 'tieng anh 2',
+        sessionId: 'sess_1789885536293_9mpcj7',
+        name: 'Bang-ghi-Unit-4-There-is-a.svg',
+        caption: "Bảng ghi cấu trúc ngữ pháp Unit 4: There's a... và từ vựng đồ vật trong phòng.",
+        studentIds: [
+          'hs_1788759867381_kkcite',
+          'hs_1788881509532_1hfn8v',
+          'hs_1788759885528_zoohtr',
+        ],
+        dataUrl:
+          'data:image/svg+xml;utf8,' +
+          encodeURIComponent(
+            `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e3a5f"/><stop offset="100%" stop-color="#0f2942"/></linearGradient></defs><rect width="800" height="520" rx="20" fill="url(#bg1)"/><rect x="20" y="20" width="760" height="480" rx="14" fill="none" stroke="#8ab4f8" stroke-width="3" stroke-dasharray="8 6"/><text x="56" y="80" fill="#fde047" font-family="sans-serif" font-size="28" font-weight="700">UNIT 4: THERE IS A... / THERE ARE...</text><text x="56" y="140" fill="#ffffff" font-family="sans-serif" font-size="22">1. (+) There is a cupboard in the bedroom.</text><text x="56" y="188" fill="#ffffff" font-family="sans-serif" font-size="22">2. (+) There are two pillows on the bed.</text><text x="56" y="236" fill="#93c5fd" font-family="sans-serif" font-size="22">3. Vocabulary: blanket, shelf, rug, cabinet</text><rect x="56" y="285" width="688" height="165" rx="12" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)"/><text x="80" y="330" fill="#86efac" font-family="sans-serif" font-size="20" font-weight="600">Homework (BTVN - 03/10/2026):</text><text x="80" y="370" fill="#e2e8f0" font-family="sans-serif" font-size="19">• Copy cấu trúc mỗi câu 3 dòng vào vở ghi</text><text x="80" y="408" fill="#e2e8f0" font-family="sans-serif" font-size="19">• Luyện đọc to từ vựng Unit 4 tại nhà</text></svg>`
+          ),
+        mimeType: 'image/svg+xml',
+        createdAt: '2026-10-03T21:05:00.000Z',
+        syncStatus: 'local',
+      },
+      {
+        id: 'photo_seed_2',
+        classKey: 'tieng anh 2',
+        sessionId: 'sess_1789885536293_9mpcj7',
+        name: 'Vo-bai-tap-Tue-Anh-Minh-Khang.svg',
+        caption: 'Vở ghi bài và bài tập trên lớp của Tuệ Anh & Minh Khang (100% hoàn thành).',
+        studentIds: ['hs_1788881509532_1hfn8v', 'hs_1788759885528_zoohtr'],
+        dataUrl:
+          'data:image/svg+xml;utf8,' +
+          encodeURIComponent(
+            `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520"><rect width="800" height="520" rx="20" fill="#fffdf9"/><g stroke="#e2e8f0" stroke-width="1.5"><line x1="0" y1="90" x2="800" y2="90"/><line x1="0" y1="140" x2="800" y2="140"/><line x1="0" y1="190" x2="800" y2="190"/><line x1="0" y1="240" x2="800" y2="240"/><line x1="0" y1="290" x2="800" y2="290"/><line x1="0" y1="340" x2="800" y2="340"/><line x1="0" y1="390" x2="800" y2="390"/></g><line x1="95" y1="0" x2="95" y2="520" stroke="#fda4af" stroke-width="2.5"/><text x="120" y="65" fill="#9d174d" font-family="sans-serif" font-size="24" font-weight="700">Saturday, October 3rd 2026 — Class: Tiếng Anh 2</text><text x="120" y="130" fill="#1e293b" font-family="sans-serif" font-size="21">Student: Tuệ Anh &amp; Minh Khang</text><text x="120" y="180" fill="#334155" font-family="sans-serif" font-size="20">Exercise 1: Complete sentences with There is / There are</text><text x="120" y="230" fill="#0f766e" font-family="sans-serif" font-size="20">1. There is a big rug in the living room. ✓</text><text x="120" y="280" fill="#0f766e" font-family="sans-serif" font-size="20">2. There are three books on the shelf. ✓</text><circle cx="650" cy="360" r="68" fill="none" stroke="#e11d48" stroke-width="5"/><text x="650" y="368" text-anchor="middle" fill="#e11d48" font-family="sans-serif" font-size="38" font-weight="800">9.5đ</text><text x="650" y="405" text-anchor="middle" fill="#be123c" font-family="sans-serif" font-size="16" font-weight="700">Very Good!</text></svg>`
+          ),
+        mimeType: 'image/svg+xml',
+        createdAt: '2026-10-03T21:10:00.000Z',
+        syncStatus: 'local',
+      },
+      {
+        id: 'photo_seed_3',
+        classKey: 'tieng anh 2',
+        sessionId: 'sess_15c50818-d140-4df7-a084-e17aa681a574',
+        name: 'Flashcard-Tu-vung-Unit-5.svg',
+        caption: 'Hoạt động học từ vựng qua Flashcard & Mini test Unit 5 (06/10/2026).',
+        studentIds: [
+          'hs_1788759867381_kkcite',
+          'hs_1788881509532_1hfn8v',
+          'hs_1788759885528_zoohtr',
+        ],
+        dataUrl:
+          'data:image/svg+xml;utf8,' +
+          encodeURIComponent(
+            `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520"><defs><linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fdf2f8"/><stop offset="100%" stop-color="#fce7f3"/></linearGradient></defs><rect width="800" height="520" rx="20" fill="url(#bg2)"/><rect x="45" y="45" width="330" height="200" rx="18" fill="#ffffff" stroke="#f472b6" stroke-width="3"/><text x="210" y="125" text-anchor="middle" fill="#9d174d" font-family="sans-serif" font-size="28" font-weight="700">UNIT 5 FLASHCARDS</text><text x="210" y="170" text-anchor="middle" fill="#475569" font-family="sans-serif" font-size="20">Action Verbs: swim, fly, climb</text><rect x="425" y="45" width="330" height="200" rx="18" fill="#ffffff" stroke="#60a5fa" stroke-width="3"/><text x="590" y="125" text-anchor="middle" fill="#1d4ed8" font-family="sans-serif" font-size="26" font-weight="700">GRAMMAR POINT</text><text x="590" y="170" text-anchor="middle" fill="#475569" font-family="sans-serif" font-size="20">He can swim / She can't fly</text><rect x="45" y="280" width="710" height="190" rx="18" fill="#ffffff" stroke="#c084fc" stroke-width="3"/><text x="85" y="335" fill="#6b21a8" font-family="sans-serif" font-size="24" font-weight="700">Kết quả Kiểm tra từ vựng Unit 5 (Buổi 2 - 06/10):</text><text x="85" y="385" fill="#334155" font-family="sans-serif" font-size="21">• Diệu My: 9.0/10 (Thuộc từ vựng tốt)</text><text x="85" y="425" fill="#334155" font-family="sans-serif" font-size="21">• Tuệ Anh: 8.5/10 — Minh Khang: 7.5/10</text></svg>`
+          ),
+        mimeType: 'image/svg+xml',
+        createdAt: '2026-10-06T21:12:00.000Z',
+        syncStatus: 'local',
+      },
+      {
+        id: 'photo_seed_4',
+        classKey: 'tieng anh 2',
+        sessionId: 'sess_db7d76c9-5cee-4532-9fea-8c44a30afeea',
+        name: 'Tong-on-Unit-1-Chao-mung-Thanh-Duyen.svg',
+        caption: 'Ảnh bài tổng ôn Unit 1 và chào mừng bạn mới Thanh Duyên vào lớp Tiếng Anh 2.',
+        studentIds: [
+          'hs_1788759867381_kkcite',
+          'hs_1788881509532_1hfn8v',
+          'hs_1791298995218_i8vbzg',
+          'hs_1788759885528_zoohtr',
+        ],
+        dataUrl:
+          'data:image/svg+xml;utf8,' +
+          encodeURIComponent(
+            `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520"><defs><linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eff6ff"/><stop offset="100%" stop-color="#dbeafe"/></linearGradient></defs><rect width="800" height="520" rx="20" fill="url(#bg3)"/><rect x="40" y="40" width="720" height="440" rx="20" fill="#ffffff" stroke="#93c5fd" stroke-width="3"/><text x="400" y="110" text-anchor="middle" fill="#1e40af" font-family="sans-serif" font-size="30" font-weight="800">BUỔI 3: TỔNG ÔN UNIT 1 (13/10/2026)</text><text x="400" y="160" text-anchor="middle" fill="#3b82f6" font-family="sans-serif" font-size="22" font-weight="600">Lớp Tiếng Anh 2 — Sĩ số: 4/4 học sinh</text><line x1="100" y1="190" x2="700" y2="190" stroke="#bfdbfe" stroke-width="2"/><text x="100" y="245" fill="#1e293b" font-family="sans-serif" font-size="21">✓ Ôn tập hệ thống câu hỏi &amp; phản xạ nhanh Unit 1</text><text x="100" y="295" fill="#1e293b" font-family="sans-serif" font-size="21">✓ Chào mừng học sinh mới: Thanh Duyên hòa nhập rất nhanh</text><text x="100" y="345" fill="#1e293b" font-family="sans-serif" font-size="21">✓ Làm đề Mini Review số 1 (Điểm cao nhất: Tuệ Anh 9.5đ)</text><rect x="100" y="385" width="600" height="56" rx="12" fill="#dcfce7"/><text x="400" y="420" text-anchor="middle" fill="#166534" font-family="sans-serif" font-size="19" font-weight="700">Đã lưu trữ trong Album Buổi 3 • Sẵn sàng đồng bộ Google Drive</text></svg>`
+          ),
+        mimeType: 'image/svg+xml',
+        createdAt: '2026-10-13T21:15:00.000Z',
+        syncStatus: 'local',
+      },
+    ],
+    sessionAlbums: {
+      sess_1789885536293_9mpcj7: {
+        sessionId: 'sess_1789885536293_9mpcj7',
+        classKey: 'tieng anh 2',
+        albumNote: 'Lưu ảnh bảng ghi cấu trúc Unit 4 và vở bài tập trên lớp của các con.',
+      },
+      'sess_15c50818-d140-4df7-a084-e17aa681a574': {
+        sessionId: 'sess_15c50818-d140-4df7-a084-e17aa681a574',
+        classKey: 'tieng anh 2',
+        albumNote: 'Ảnh hoạt động Flashcard từ vựng Unit 5 và bài kiểm tra ngắn đầu giờ.',
+      },
+      'sess_db7d76c9-5cee-4532-9fea-8c44a30afeea': {
+        sessionId: 'sess_db7d76c9-5cee-4532-9fea-8c44a30afeea',
+        classKey: 'tieng anh 2',
+        albumNote: 'Buổi tổng ôn Unit 1 và đón bạn mới Thanh Duyên.',
+      },
+    },
+    driveConfig: {
+      mode: 'apps_script',
+      scriptWebAppUrl: '',
+      rootFolderId: '1Wvv1jQdaizAOwTc9LZ9JEutwbLj1FQeN',
+      rootFolderName: 'NTTCLASS_ALBUMS',
+      oauthClientId: '',
+      oauthAccessToken: '',
+      connectedEmail: '',
+      autoSync: true,
+      lastSyncedAt: '',
+      classFolderIds: {},
+    },
     tuitionStatuses: {},
     payments: [],
     prepayments: [],
@@ -431,6 +539,7 @@ export function createInitialSeedState(): AppState {
         sessionFees: true,
         learningJournal: true,
         scores: true,
+        album: true,
         tuitionTrend: true,
         tuitionSurcharges: true,
         tuitionDiscounts: true,

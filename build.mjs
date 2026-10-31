@@ -16,6 +16,7 @@ const moduleFiles = [
   'src/views/tuition.ts',
   'src/views/logs.ts',
   'src/views/scores.ts',
+  'src/views/album.ts',
   'src/views/classHub.ts',
   'src/views/dashboard.ts',
   'src/views/otherViews.ts',
