@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html> <html lang=vi data-app-theme=blue data-app-surface=app data-journal-export-actions-bound=true data-theme-mode=light style=--sidebar-open-width:220px;--image-glass-user-opacity:67.5%;--image-glass-surface-opacity:85.7%;--image-glass-surface-soft-opacity:76.6%;--image-glass-panel-opacity:85.7%;--image-glass-panel-strong-opacity:92.2%;--image-glass-panel-soft-opacity:76.6%;--image-glass-calendar-opacity:70.1%;--image-glass-cell-opacity:51.9%;--image-glass-hover-opacity:74%;--image-glass-border-opacity:89.6%;--totoro-glass-panel-opacity:93.5%;--totoro-glass-panel-soft-opacity:76.6%;--totoro-glass-border-opacity:90.9%;--totoro-glass-stats-opacity:97.4%;--totoro-glass-stats-border-opacity:93.5%;--image-glass-guide-opacity:97.4%;--image-glass-guide-soft-opacity:85.7%;--theme-image-alpha-99:1;--theme-image-alpha-98:1;--theme-image-alpha-94:1;--theme-image-alpha-92:1;--theme-image-alpha-90:1;--theme-image-alpha-72:0.874;--theme-image-alpha-65:0.789;--theme-image-alpha-46:0.559;--theme-image-alpha-42:0.51;--theme-image-alpha-36:0.437;--theme-image-alpha-34:0.413;--theme-image-alpha-25:0.304;--theme-image-alpha-18:0.219;--theme-image-alpha-14:0.17;--theme-image-alpha-10:0.121 data-app-variant=pink data-app-glass-opacity=85 data-app-token-ui=v2 data-user-role=teacher data-thuy-sidebar data-thuy-journal-redesign data-student-class-hub-access><meta charset=utf-8>
+<!DOCTYPE html> <html lang=vi data-app-theme=blue data-app-surface=app data-journal-export-actions-bound=true data-theme-mode=light style=--sidebar-open-width:220px;--image-glass-user-opacity:67.5%;--image-glass-surface-opacity:85.7%;--image-glass-surface-soft-opacity:76.6%;--image-glass-panel-opacity:85.7%;--image-glass-panel-strong-opacity:92.2%;--image-glass-panel-soft-opacity:76.6%;--image-glass-calendar-opacity:70.1%;--image-glass-cell-opacity:51.9%;--image-glass-hover-opacity:74%;--image-glass-border-opacity:89.6%;--totoro-glass-panel-opacity:93.5%;--totoro-glass-panel-soft-opacity:76.6%;--totoro-glass-border-opacity:90.9%;--totoro-glass-stats-opacity:97.4%;--totoro-glass-stats-border-opacity:93.5%;--image-glass-guide-opacity:97.4%;--image-glass-guide-soft-opacity:85.7%;--theme-image-alpha-99:1;--theme-image-alpha-98:1;--theme-image-alpha-94:1;--theme-image-alpha-92:1;--theme-image-alpha-90:1;--theme-image-alpha-72:0.874;--theme-image-alpha-65:0.789;--theme-image-alpha-46:0.559;--theme-image-alpha-42:0.51;--theme-image-alpha-36:0.437;--theme-image-alpha-34:0.413;--theme-image-alpha-25:0.304;--theme-image-alpha-18:0.219;--theme-image-alpha-14:0.17;--theme-image-alpha-10:0.121 data-app-variant=pink data-app-glass-opacity=85 data-app-token-ui=v2 data-user-role=teacher data-thuy-sidebar data-thuy-journal-redesign data-student-class-hub-access><meta charset=utf-8>
 <meta name=viewport content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>NTTCLASS - Quản lý lớp học gọn gàng</title>
 <meta name=description content="Quản lý lịch dạy, học sinh, điểm số và học phí trên một nền tảng gọn gàng, rõ ràng dành cho giáo viên.">
@@ -3351,13 +3351,6 @@
 <template id=privilegedModalMount></template>
 
 <div id=calendarContextMenu class="calendar-context-menu " role=menu hidden data-bound=true></div>
-  <script>
-    if (window.location.protocol === 'file:') {
-      var s = document.createElement('script');
-      s.src = './dist/app.bundle.js';
-      document.body.appendChild(s);
-    }
-  </script>
-  <script type="module" src="/src/main.ts"></script>
+  <script src="./dist/app.bundle.js"></script>
 </body>
 </html>

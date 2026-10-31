@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { stripTypeScriptTypes } from 'node:module';
 
@@ -32,7 +33,7 @@ for (const relPath of moduleFiles) {
 
   // Strip ES module imports and exports for single-scope IIFE execution
   jsCode = jsCode.replace(/^\s*import\s+[\s\S]*?from\s+['"][^'"]+['"];?\s*$/gm, '');
-  jsCode = jsCode.replace(/^\s*export\s+(function|const|let|var|class)\s+/gm, '$1 ');
+  jsCode = jsCode.replace(/^\s*export\s+(async\s+function|function|const|let|var|class)\s+/gm, '$1 ');
 
   bundleParts.push(`\n// === MODULE: ${relPath} ===\n`);
   bundleParts.push(jsCode);
@@ -46,6 +47,10 @@ if (!fs.existsSync(distDir)) {
 }
 
 const bundleCode = bundleParts.join('\n');
+
+// Validate JS syntax before writing
+new vm.Script(bundleCode, { filename: 'dist/app.bundle.js' });
+
 const bundlePath = path.join(distDir, 'app.bundle.js');
 fs.writeFileSync(bundlePath, bundleCode, 'utf-8');
 console.log(`1. Built dist/app.bundle.js (${bundleCode.length.toLocaleString()} bytes)`);
@@ -63,13 +68,13 @@ let singleFileHtml = baseHtml;
 // Replace external CSS links with inline <style>
 singleFileHtml = singleFileHtml.replace(
   /\s*<link rel="stylesheet" href="\.\/src\/styles\/nttclass\.css">\s*<link rel="stylesheet" href="\.\/src\/styles\/overrides\.css">/,
-  `\n  <style id="nttclass-inline-styles">\n${safeInlineCss}\n  </style>`
+  () => `\n  <style id="nttclass-inline-styles">\n${safeInlineCss}\n  </style>`
 );
 
-// Replace bottom dev/file scripts with inline <script>
+// Replace bottom script tag with inline <script>
 singleFileHtml = singleFileHtml.replace(
-  /<script>\s*if \(window\.location\.protocol === 'file:'\)[\s\S]*?<\/script>\s*<script type="module" src="\/src\/main\.ts"><\/script>/,
-  `<script id="nttclass-inline-app">\n${safeInlineJs}\n  </script>`
+  /<script src="\.\/dist\/app\.bundle\.js"><\/script>|(<script>\s*if \(window\.location\.protocol === 'file:'\)[\s\S]*?<\/script>\s*<script type="module" src="\/src\/main\.ts"><\/script>)/,
+  () => `<script id="nttclass-inline-app">\n${safeInlineJs}\n  </script>`
 );
 
 const distHtmlPath = path.join(distDir, 'index.html');
