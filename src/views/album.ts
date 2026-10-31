@@ -125,9 +125,11 @@ function doPost(e) {
     const rootFolder = getRootFolder(payload.rootFolderId);
 
     if (action === 'ping') {
+      var userEmail = '';
+      try { userEmail = Session.getActiveUser().getEmail() || ''; } catch (e) {}
       return jsonResponse({
         ok: true,
-        email: Session.getActiveUser().getEmail() || '',
+        email: userEmail,
         rootFolderId: rootFolder.getId(),
         rootFolderName: rootFolder.getName(),
         rootFolderUrl: rootFolder.getUrl()
@@ -599,6 +601,19 @@ function buildDriveHierarchyPayload() {
   });
 }
 
+function ensureBase64FromDataUrl(dataUrl: string): string {
+  if (!dataUrl) return '';
+  if (dataUrl.includes(';base64,')) {
+    return dataUrl.split(';base64,')[1] || '';
+  }
+  const commaIdx = dataUrl.indexOf(',');
+  if (commaIdx >= 0) {
+    const rawPayload = decodeURIComponent(dataUrl.slice(commaIdx + 1));
+    return btoa(unescape(encodeURIComponent(rawPayload)));
+  }
+  return dataUrl;
+}
+
 export async function uploadSinglePhotoToDrive(photoId: string, silent = false): Promise<boolean> {
   if (!isDriveConnected()) {
     if (!silent) {
@@ -646,7 +661,7 @@ export async function uploadSinglePhotoToDrive(photoId: string, silent = false):
         sessionFolderName,
         fileName: photo.name,
         mimeType: photo.mimeType,
-        base64Data: photo.dataUrl,
+        base64Data: ensureBase64FromDataUrl(photo.dataUrl),
         caption: photo.caption,
         studentIds: photo.studentIds,
       });
@@ -1142,9 +1157,7 @@ function renderClassAlbumsOverview(
         </div>
         <div class="album-session-body">
           <div class="album-session-date-row">
-            <strong>${escapeHtml(getVietDayFull(sess.date))}, ${escapeHtml(
-        formatDateDMY(sess.date)
-      )}</strong>
+            <strong>${escapeHtml(getVietDayFull(sess.date))}</strong>
             <span>${escapeHtml(sess.startTime)} - ${escapeHtml(sess.endTime)}</span>
           </div>
           <h3 class="album-session-title">${escapeHtml(
@@ -1367,7 +1380,7 @@ function renderSessionAlbumDetail(
           <span class="album-badge-primary">BUỔI ${displayIndex}</span>
           <span class="student-class-hub-class-badge">${escapeHtml(
             getVietDayFull(activeSession.date)
-          )}, ${escapeHtml(formatDateDMY(activeSession.date))}</span>
+          )}</span>
           <span class="student-class-hub-class-badge">${escapeHtml(
             activeSession.startTime
           )} - ${escapeHtml(activeSession.endTime)}</span>
@@ -2200,10 +2213,13 @@ export function bindAlbumEvents(): void {
       };
     });
 
+    // Đóng ngay lập tức popup cấu hình khi bấm Lưu cấu hình & Đồng bộ ngay
+    closeModal('albumDriveConfigModal');
+
     if (isDriveConnected()) {
+      showToast('Đã lưu cấu hình! Đang đồng bộ dữ liệu với Google Drive...');
       if (mode === 'apps_script') {
         try {
-          showToast('Đang kiểm tra kết nối Google Drive...');
           const pingRes = await callAppsScriptBridge({ action: 'ping' });
           store.update((draft) => {
             if (pingRes.email) draft.driveConfig.connectedEmail = pingRes.email;
@@ -2211,21 +2227,14 @@ export function bindAlbumEvents(): void {
               draft.driveConfig.rootFolderId = pingRes.rootFolderId;
             }
           });
-          closeModal('albumDriveConfigModal');
-          await syncAllAlbumsWithGoogleDrive();
-          return;
-        } catch (err: any) {
-          showToast(`Đã lưu cấu hình nhưng kết nối thử thất bại: ${err?.message || err}`, 'error');
-          return;
+        } catch {
+          // Tiếp tục gọi syncAllAlbumsWithGoogleDrive để hiển thị thông báo chi tiết nếu lỗi
         }
-      } else {
-        closeModal('albumDriveConfigModal');
-        await syncAllAlbumsWithGoogleDrive();
-        return;
       }
+      await syncAllAlbumsWithGoogleDrive();
+      return;
     }
 
-    closeModal('albumDriveConfigModal');
     showToast('Đã lưu cấu hình Google Drive.');
   });
 }

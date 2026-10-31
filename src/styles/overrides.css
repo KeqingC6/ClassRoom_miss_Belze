@@ -244,9 +244,140 @@
   }
 }
 
+#view-album {
+  --sv2-text: var(--palette-text, var(--text-main, #183653));
+  --sv2-muted: var(--palette-muted, var(--text-muted, #53677d));
+  --sv2-primary: var(--palette-heading, var(--palette-primary, var(--primary, #2679d8)));
+  --sv2-card: var(--palette-card, var(--card-bg, #fff));
+  --sv2-soft: var(--palette-card-soft, var(--primary-soft, #eef7ff));
+  --sv2-selected-class-bg: color-mix(in srgb, var(--primary) 12%, var(--surface, #fff));
+  --sv2-border: var(--palette-border, var(--border-color, #b6d2ed));
+  --sv2-focus: var(--palette-accent, var(--sv2-primary));
+  --sv2-danger: var(--danger, #e43f51);
+  color: var(--sv2-text);
+  font: 14px/1.5 "Comfortaa", sans-serif;
+}
+
+#view-album .sv2-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin-bottom: 10px;
+  padding: 0 11px;
+  border: 1px solid var(--sv2-border);
+  border-radius: 10px;
+  background: var(--sv2-card);
+  color: var(--sv2-muted);
+}
+#view-album .sv2-search input {
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  padding: 0;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  color: var(--sv2-text);
+  font-size: 11.5px;
+  font-family: inherit;
+}
+#view-album .sv2-search:focus-within {
+  border-color: var(--sv2-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--sv2-primary) 16%, transparent);
+}
+
+#view-album .sv2-roster {
+  display: grid;
+  gap: 8px;
+  max-height: calc(100vh - 310px);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+#view-album .sv2-roster-group {
+  border: 1px solid var(--sv2-border);
+  border-radius: 12px;
+  overflow: clip;
+  background: color-mix(in srgb, var(--sv2-soft) 34%, var(--sv2-card));
+}
+#view-album .sv2-class-row {
+  display: flex;
+  align-items: stretch;
+  min-height: 46px;
+  background: color-mix(in srgb, var(--sv2-soft) 52%, var(--sv2-card));
+}
+#view-album .sv2-class-row.is-selected {
+  background: var(--sv2-selected-class-bg);
+  box-shadow: inset 3px 0 var(--sv2-primary);
+}
+#view-album .sv2-class-select {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1;
+  min-width: 0;
+  padding: 6px 6px 6px 12px;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--sv2-primary);
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: none !important;
+}
+#view-album .sv2-class-toggle {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  width: 32px;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--sv2-primary);
+  padding: 0;
+  cursor: pointer;
+  box-shadow: none !important;
+}
+#view-album .sv2-student-select {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 44px;
+  padding: 7px 10px;
+  border: 0 !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--sv2-border) 42%, transparent) !important;
+  border-radius: 0 !important;
+  background: var(--sv2-card) !important;
+  color: var(--sv2-text);
+  text-align: left;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: none !important;
+  transition: background 0.14s ease;
+}
+#view-album .sv2-student-select.is-selected {
+  background: color-mix(in srgb, var(--sv2-primary) 13%, var(--sv2-card)) !important;
+  box-shadow: inset 3px 0 var(--sv2-primary) !important;
+  color: var(--sv2-primary);
+}
+#view-album :is(.sv2-class-select, .sv2-class-toggle, .sv2-student-select):hover {
+  background: var(--sv2-soft) !important;
+}
+#view-album .student-grade-color-dot {
+  border: 0;
+  box-shadow: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+}
+
 .album-layout {
   display: grid;
-  grid-template-columns: minmax(265px, 310px) minmax(0, 1fr);
+  grid-template-columns: minmax(270px, 310px) minmax(0, 1fr);
   gap: 18px;
   align-items: start;
 }
@@ -361,15 +492,16 @@
   gap: 8px;
   width: 100%;
   text-align: left;
-  padding: 7px 9px !important;
-  border-radius: 10px;
+  padding: 8px 10px !important;
 }
 .album-session-badge {
   font-size: 10px !important;
   font-weight: 800 !important;
-  width: 26px !important;
-  height: 26px !important;
+  width: 28px !important;
+  height: 28px !important;
   flex-shrink: 0;
+  background: color-mix(in srgb, var(--sv2-primary) 14%, var(--sv2-card)) !important;
+  color: var(--sv2-primary) !important;
 }
 .album-session-nav-copy {
   display: flex;
@@ -406,19 +538,22 @@
 }
 
 .album-add-session-inline-btn {
-  width: 100%;
-  margin-top: 4px;
-  padding: 6px 10px;
+  display: block;
+  width: calc(100% - 14px);
+  margin: 6px 7px;
+  padding: 7px 10px;
   border-radius: 8px;
-  border: 1px dashed var(--border-color);
-  background: transparent;
-  color: var(--primary);
+  border: 1px dashed color-mix(in srgb, var(--sv2-primary) 42%, var(--sv2-border));
+  background: color-mix(in srgb, var(--sv2-soft) 45%, var(--sv2-card));
+  color: var(--sv2-primary);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
+  transition: background 0.14s ease;
 }
 .album-add-session-inline-btn:hover {
-  background: color-mix(in srgb, var(--primary-soft) 50%, transparent);
+  background: var(--sv2-soft);
 }
 
 .album-main {
@@ -851,15 +986,23 @@
 .album-photo-actions {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 5px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   padding-top: 8px;
   margin-top: auto;
   border-top: 1px solid color-mix(in srgb, var(--border-color) 65%, transparent);
 }
 .album-photo-actions .btn-sm {
-  padding: 4px 8px;
-  font-size: 11px;
+  padding: 5px 7px;
+  font-size: 10.5px;
+  white-space: nowrap;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+.album-photo-actions .btn-danger.btn-sm {
+  flex: 0 0 32px;
+  padding: 5px 0;
 }
 
 /* Lightbox Modal & Student Check Grid */
