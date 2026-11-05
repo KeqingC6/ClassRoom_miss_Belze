@@ -358,6 +358,7 @@ export function bindOtherViewsEvents(navigateToView: (v: ViewId) => void): void 
     'devices',
     'features',
     'journal',
+    'drive',
     'legal',
     'appearance',
     'sharing',
@@ -377,7 +378,10 @@ export function bindOtherViewsEvents(navigateToView: (v: ViewId) => void): void 
       const panels = settingsModal.querySelectorAll<HTMLElement>('section.settings-panel');
       const targetIdx = tabOrder.indexOf(tabKey);
       panels.forEach((p, idx) => {
-        const isMatch = idx === (targetIdx >= 0 ? targetIdx : 0);
+        const panelKey = p.dataset.settingsPanel;
+        const isMatch = panelKey
+          ? panelKey === tabKey
+          : idx === (targetIdx >= 0 ? targetIdx : 0);
         p.classList.toggle('active', isMatch);
         if (isMatch) p.removeAttribute('hidden');
         else p.setAttribute('hidden', '');

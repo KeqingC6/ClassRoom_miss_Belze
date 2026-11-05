@@ -291,7 +291,7 @@
 #view-album .sv2-roster {
   display: grid;
   gap: 8px;
-  max-height: calc(100vh - 310px);
+  max-height: calc(100vh - 210px);
   overflow-y: auto;
   scrollbar-gutter: stable;
 }
@@ -1059,4 +1059,356 @@
   font-size: 12px;
   cursor: pointer;
 }
+
+#albumDriveConfigModal {
+  z-index: 12000;
+}
+
+/* =========================================================
+   PHIẾU XUẤT NỘI DUNG BUỔI HỌC (#sessionSummaryExportModal)
+   ========================================================= */
+.session-summary-export-modal-container {
+  width: min(1040px, calc(100vw - 28px)) !important;
+  max-height: calc(100vh - 28px) !important;
+}
+
+.session-summary-export-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+}
+
+.session-summary-export-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 8px;
+}
+
+.session-summary-export-preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.session-summary-export-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 2px 0;
+}
+
+.session-summary-export-preview-header strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main, #2f1f27);
+}
+
+.session-summary-export-preview-header span {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted, #7d6772);
+  margin-top: 2px;
+}
+
+.session-summary-export-preview-badge {
+  display: inline-flex !important;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px !important;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: #f6e5ec;
+  color: #922f56 !important;
+}
+
+.session-summary-export-preview-stage {
+  background: #f9f3f6;
+  border: 1px dashed #dfC5CF;
+  border-radius: 18px;
+  padding: 18px;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* Card "NỘI DUNG BUỔI HỌC" 1:1 theo mẫu */
+.ss-export-sheet {
+  width: 920px;
+  min-width: 720px;
+  max-width: 100%;
+  background: #ffffff;
+  border: 1.5px solid #e5c8d3;
+  border-radius: 24px;
+  padding: 32px 36px;
+  box-sizing: border-box;
+  font-family: "Comfortaa", sans-serif;
+  color: #3a2a31;
+  box-shadow: 0 10px 28px rgba(146, 47, 86, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ss-export-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.ss-export-title {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #922f56;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.ss-export-subtitle-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.ss-export-subtitle-line {
+  width: 96px;
+  height: 1.5px;
+  background: #e2c6d0;
+  border-radius: 999px;
+}
+
+.ss-export-subtitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #7d4e60;
+}
+
+/* Banner Ngày dạy & Giờ dạy */
+.ss-export-banner {
+  background: linear-gradient(90deg, #8a284f 0%, #9e3862 100%);
+  border-radius: 16px;
+  padding: 16px 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  color: #ffffff;
+}
+
+.ss-export-banner-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ss-export-banner-item + .ss-export-banner-item {
+  border-left: 1px solid rgba(255, 255, 255, 0.24);
+  padding-left: 28px;
+}
+
+.ss-export-banner-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #922f56;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 38px;
+}
+
+.ss-export-banner-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ss-export-banner-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ss-export-banner-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.ss-export-banner-value {
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+/* Khối 2 cột: Nội dung buổi học & Bài tập về nhà */
+.ss-export-two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.ss-export-two-col.is-single-col {
+  grid-template-columns: 1fr;
+}
+
+.ss-export-box {
+  background: #ffffff;
+  border: 1px solid #e5cfd7;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ss-export-box-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ss-export-section-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #922f56;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 34px;
+}
+
+.ss-export-section-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ss-export-section-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #922f56;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.ss-export-section-line {
+  flex: 1;
+  height: 1px;
+  background: #ebd8df;
+  margin-left: 6px;
+}
+
+.ss-export-box-body {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #493840;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ss-export-lesson-title {
+  font-weight: 700;
+  color: #3a2a31;
+  margin-bottom: 4px;
+}
+
+/* Khối Nhận xét học sinh */
+.ss-export-students-section {
+  background: #ffffff;
+  border: 1px solid #e5cfd7;
+  border-radius: 16px;
+  padding: 20px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ss-export-students-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.ss-export-student-card {
+  background: #ffffff;
+  border: 1px solid #ead8df;
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ss-export-student-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ss-export-student-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #f6e5ec;
+  color: #922f56;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+}
+
+.ss-export-student-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3a2a31;
+}
+
+.ss-export-student-details {
+  margin-left: 13px;
+  padding-left: 22px;
+  border-left: 1.5px dotted #dfc5cf;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ss-export-student-row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 8px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  align-items: baseline;
+}
+
+.ss-export-student-key {
+  font-weight: 700;
+  color: #922f56;
+}
+
+.ss-export-student-val {
+  color: #493840;
+  font-weight: 500;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+
 

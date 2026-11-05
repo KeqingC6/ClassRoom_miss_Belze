@@ -932,9 +932,11 @@ export function renderAlbumView(): void {
   const connected = isDriveConnected();
   const cfg = state.driveConfig;
 
-  // 1. Render Left Sidebar (Drive status + Search + Class & Session Tree)
-  const driveStatusEl = document.getElementById('albumDriveStatusCard');
-  if (driveStatusEl) {
+  // 1. Render Drive Status Cards (moved to Account Settings modal)
+  const driveStatusCards = document.querySelectorAll<HTMLElement>(
+    '#albumDriveStatusCard, [data-drive-status-card]'
+  );
+  if (driveStatusCards.length > 0) {
     const syncedCount = state.albums.filter((p) => p.syncStatus === 'synced' || p.driveFileId).length;
     const totalCount = state.albums.length;
     const lastSyncText = cfg.lastSyncedAt
@@ -944,7 +946,7 @@ export function renderAlbumView(): void {
         })} ${formatDateDMY(cfg.lastSyncedAt.slice(0, 10))}`
       : 'Lưu tự động trên trình duyệt';
 
-    driveStatusEl.innerHTML = `
+    const cardHtml = `
       <div class="album-drive-status-top">
         <span class="album-drive-dot ${connected ? 'is-online' : 'is-local'}" aria-hidden="true"></span>
         <div class="album-drive-status-copy">
@@ -971,6 +973,10 @@ export function renderAlbumView(): void {
         </button>
       </div>
     `;
+
+    driveStatusCards.forEach((el) => {
+      el.innerHTML = cardHtml;
+    });
   }
 
   // Month filter mode toggle buttons in sidebar
@@ -1877,6 +1883,20 @@ export function bindAlbumEvents(): void {
     if (dropzone) {
       const fileInput = document.getElementById('albumDirectFileInput') as HTMLInputElement | null;
       fileInput?.click();
+    }
+  });
+
+  // Delegated clicks inside #accountSettingsModal for Drive Status Card actions
+  document.getElementById('accountSettingsModal')?.addEventListener('click', async (e) => {
+    const target = e.target as HTMLElement;
+    const actionBtn = target.closest<HTMLElement>('[data-album-action]');
+    if (!actionBtn) return;
+    const act = actionBtn.dataset.albumAction;
+    if (act === 'open-drive-config') {
+      populateDriveConfigModal();
+      openModal('albumDriveConfigModal');
+    } else if (act === 'sync-drive') {
+      await syncAllAlbumsWithGoogleDrive();
     }
   });
 

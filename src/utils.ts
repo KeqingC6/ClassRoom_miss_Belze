@@ -140,6 +140,8 @@ export function showToast(
 ): void {
   const toast = document.getElementById('toastNotification');
   if (!toast) return;
+  toast.removeAttribute('hidden');
+  toast.style.display = '';
   toast.className = `notification ${type} show`;
   const undoBtn = document.getElementById('undoDeleteBtn');
 
