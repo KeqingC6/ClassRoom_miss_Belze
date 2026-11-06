@@ -1681,15 +1681,21 @@ async function renderSessionSummaryCanvas(
   data: SessionSummaryExportData,
   checked: Set<SessionSummaryExportSectionKey>
 ): Promise<HTMLCanvasElement> {
-  if (document.fonts && document.fonts.ready) {
+  if (document.fonts) {
     try {
-      await document.fonts.ready;
+      await Promise.all([
+        document.fonts.load('500 14px "Roboto"'),
+        document.fonts.load('700 16px "Roboto"'),
+      ]);
+      if (document.fonts.ready) {
+        await document.fonts.ready;
+      }
     } catch {
       // ignore
     }
   }
 
-  const fontFamily = '"Comfortaa", "Segoe UI", sans-serif';
+  const fontFamily = '"Roboto", sans-serif';
   const scale = 2; // 2x Retina
   const W = 960;
   const outerPad = 14;
