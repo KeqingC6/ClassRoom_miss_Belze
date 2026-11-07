@@ -1,6 +1,7 @@
 import { store } from '../store';
 import type { ClassSession, SessionStudentRecord } from '../types';
 import {
+  addDaysIso,
   closeModal,
   computeHoursBetween,
   escapeHtml,
@@ -8,13 +9,17 @@ import {
   formatDateDMY,
   formatMoney,
   generateId,
+  getMondayOfIso,
+  getTodayIso,
+  getVietDayCode,
   openModal,
   parseMoneyInput,
+  shiftMonth,
   showToast,
 } from '../utils';
 
 let calendarViewMode: 'week' | 'month' = 'week';
-let currentWeekMonday = '2026-10-26'; // Week containing 2026-10-30
+let currentWeekMonday = getMondayOfIso(getTodayIso());
 let filterClassKey = '';
 let filterStudentId = '';
 
@@ -26,28 +31,23 @@ let editScoreMetaDraft = { type: 'KTTX', testName: '', maxScore: 10 };
 let editStudentFilterMode: 'all' | 'incomplete-hw' | 'missing-comment' = 'all';
 
 function getMondayOf(isoDate: string): string {
-  const d = new Date(isoDate + 'T00:00:00');
-  if (isNaN(d.getTime())) return '2026-10-26';
-  const day = d.getDay(); // 0=Sun..6=Sat
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  return d.toISOString().slice(0, 10);
+  return getMondayOfIso(isoDate);
 }
 
 function addDays(isoDate: string, days: number): string {
-  const d = new Date(isoDate + 'T00:00:00');
-  d.setDate(d.getDate() + days);
-  return d.toISOString().slice(0, 10);
+  return addDaysIso(isoDate, days);
 }
 
 export function renderSchedulerView(): void {
   const state = store.getState();
+  currentWeekMonday = getMondayOf(currentWeekMonday);
   const weekDays: string[] = [];
   for (let i = 0; i < 7; i++) {
     weekDays.push(addDays(currentWeekMonday, i));
   }
   const weekStart = weekDays[0];
   const weekEnd = weekDays[6];
+  const activeMonthYm = weekDays[3].slice(0, 7);
 
   // Update week range label
   const rangeLabelEl = document.getElementById('weekRangeLabel');
@@ -55,8 +55,7 @@ export function renderSchedulerView(): void {
     if (calendarViewMode === 'week') {
       rangeLabelEl.textContent = `${formatDateDM(weekStart)} - ${formatDateDMY(weekEnd)}`;
     } else {
-      const ym = weekStart.slice(0, 7);
-      const [y, m] = ym.split('-');
+      const [y, m] = activeMonthYm.split('-');
       rangeLabelEl.textContent = `Tháng ${parseInt(m, 10)}/${y}`;
     }
   }
@@ -84,8 +83,7 @@ export function renderSchedulerView(): void {
     if (calendarViewMode === 'week') {
       return s.date >= weekStart && s.date <= weekEnd;
     } else {
-      const ym = weekStart.slice(0, 7);
-      return s.date.startsWith(ym);
+      return s.date.startsWith(activeMonthYm);
     }
   });
 
@@ -116,16 +114,15 @@ export function renderSchedulerView(): void {
     if (weekWrapper) weekWrapper.style.display = 'none';
     if (monthGrid) {
       monthGrid.style.display = 'grid';
-      renderMonthCalendar(weekStart.slice(0, 7), relevantSessions);
+      renderMonthCalendar(activeMonthYm, relevantSessions);
     }
   }
 }
 
 function renderWeekCalendar(weekDays: string[], sessions: ClassSession[]): void {
   const state = store.getState();
-  const dayNames = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
   const headerRow = document.getElementById('weekCalendarHeaderRow');
-  const todayIso = '2026-10-30';
+  const todayIso = getTodayIso();
 
   if (headerRow) {
     headerRow.innerHTML =
@@ -135,10 +132,11 @@ function renderWeekCalendar(weekDays: string[], sessions: ClassSession[]): void 
           const daySessions = sessions.filter((s) => s.date === dateIso);
           const dayMoney = daySessions.reduce((acc, s) => acc + (s.price || 0), 0);
           const isToday = dateIso === todayIso;
+          const dayLabelCode = getVietDayCode(dateIso);
           return `<div class="week-day-header ${isToday ? 'is-today' : ''}" style="grid-column:${
             idx + 2
           }">
-            <span class="day-label">${dayNames[idx]} · ${formatDateDM(dateIso)}</span>
+            <span class="day-label">${dayLabelCode} · ${formatDateDM(dateIso)}</span>
             <span class="day-total">${formatMoney(dayMoney)}</span>
           </div>`;
         })
@@ -205,7 +203,7 @@ function renderMonthCalendar(ym: string, sessions: ClassSession[]): void {
   const firstDay = new Date(y, m - 1, 1);
   const startOffset = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
   const daysInMonth = new Date(y, m, 0).getDate();
-  const todayIso = '2026-10-30';
+  const todayIso = getTodayIso();
 
   const dayHeaders = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']
     .map((d) => `<div class="month-weekday-header">${d}</div>`)
@@ -320,8 +318,13 @@ export function openCreateSessionModal(defaultDate?: string): void {
   const contentInput = document.getElementById('sessionContent') as HTMLTextAreaElement | null;
   const hwInput = document.getElementById('sessionHomeworkContent') as HTMLTextAreaElement | null;
 
+  const initialDate = defaultDate || getTodayIso();
   if (nameInput) nameInput.value = defaultCls?.name || '';
-  if (dateInput) dateInput.value = defaultDate || '2026-10-30';
+  if (dateInput) {
+    dateInput.value = initialDate;
+    const disp = dateInput.parentElement?.querySelector('.form-date-display');
+    if (disp) disp.textContent = formatDateDMY(initialDate);
+  }
   if (startInput) startInput.value = '19:30';
   if (endInput) endInput.value = '21:00';
   if (hoursInput) hoursInput.value = '1.5';
@@ -623,15 +626,27 @@ export function bindSchedulerEvents(): void {
 
   // Prev / Today / Next navigation
   document.getElementById('prevWeekBtn')?.addEventListener('click', () => {
-    currentWeekMonday = addDays(currentWeekMonday, calendarViewMode === 'week' ? -7 : -30);
+    if (calendarViewMode === 'week') {
+      currentWeekMonday = addDays(currentWeekMonday, -7);
+    } else {
+      const curYm = addDays(currentWeekMonday, 3).slice(0, 7);
+      const prevYm = shiftMonth(curYm, -1);
+      currentWeekMonday = getMondayOf(`${prevYm}-15`);
+    }
     renderSchedulerView();
   });
   document.getElementById('nextWeekBtn')?.addEventListener('click', () => {
-    currentWeekMonday = addDays(currentWeekMonday, calendarViewMode === 'week' ? 7 : 30);
+    if (calendarViewMode === 'week') {
+      currentWeekMonday = addDays(currentWeekMonday, 7);
+    } else {
+      const curYm = addDays(currentWeekMonday, 3).slice(0, 7);
+      const nextYm = shiftMonth(curYm, 1);
+      currentWeekMonday = getMondayOf(`${nextYm}-15`);
+    }
     renderSchedulerView();
   });
   document.getElementById('todayWeekBtn')?.addEventListener('click', () => {
-    currentWeekMonday = getMondayOf('2026-10-30');
+    currentWeekMonday = getMondayOf(getTodayIso());
     renderSchedulerView();
   });
 

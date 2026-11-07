@@ -1,6 +1,13 @@
 import { store } from '../store';
 import type { ViewId } from '../types';
-import { escapeHtml, formatMoney } from '../utils';
+import {
+  addDaysIso,
+  escapeHtml,
+  formatDateDMY,
+  formatMoney,
+  getTodayIso,
+  getVietDayShort,
+} from '../utils';
 import { openEditSessionModal } from './scheduler';
 
 export function renderDashboardView(): void {
@@ -36,9 +43,16 @@ export function renderDashboardView(): void {
   if (elTuition) elTuition.textContent = formatMoney(monthlyTuitionTotal);
   if (elClasses) elClasses.textContent = String(state.classes.length);
 
-  // 2. Upcoming schedule (Today 2026-10-30 & Tomorrow 2026-10-31)
-  const todayIso = '2026-10-30';
-  const tomorrowIso = '2026-10-31';
+  // 2. Upcoming schedule (Today & Tomorrow)
+  const todayIso = getTodayIso();
+  const tomorrowIso = addDaysIso(todayIso, 1);
+  const todayDisplay = `${getVietDayShort(todayIso)} - ${formatDateDMY(todayIso)}`;
+  const tomorrowDisplay = `${getVietDayShort(tomorrowIso)} - ${formatDateDMY(tomorrowIso)}`;
+
+  const todayLabelEl = document.getElementById('today-date-label');
+  const tomorrowLabelEl = document.getElementById('tomorrow-date-label');
+  if (todayLabelEl) todayLabelEl.textContent = todayDisplay;
+  if (tomorrowLabelEl) tomorrowLabelEl.textContent = tomorrowDisplay;
 
   const todayContainer = document.getElementById('today-sessions-container');
   const tomorrowContainer = document.getElementById('tomorrow-sessions-container');
@@ -71,12 +85,12 @@ export function renderDashboardView(): void {
   };
 
   if (todayContainer) {
-    todayContainer.innerHTML = renderDaySessionsList(todayIso, 'hôm nay (Thứ 6 - 30/10/2026)');
+    todayContainer.innerHTML = renderDaySessionsList(todayIso, `hôm nay (${todayDisplay})`);
   }
   if (tomorrowContainer) {
     tomorrowContainer.innerHTML = renderDaySessionsList(
       tomorrowIso,
-      'ngày mai (Thứ 7 - 31/10/2026)'
+      `ngày mai (${tomorrowDisplay})`
     );
   }
 

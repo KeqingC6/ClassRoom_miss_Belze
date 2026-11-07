@@ -1,6 +1,7 @@
 import { store } from './store';
 
 const VIET_DAYS = ['CN', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+const VIET_DAY_CODES = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
 const VIET_FULL_DAYS = [
   'Chủ Nhật',
   'Thứ Hai',
@@ -10,6 +11,46 @@ const VIET_FULL_DAYS = [
   'Thứ Sáu',
   'Thứ Bảy',
 ];
+
+export function formatLocalDateIso(d: Date = new Date()): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+export function getTodayIso(): string {
+  return formatLocalDateIso(new Date());
+}
+
+export function parseLocalDateIso(isoDate: string): Date {
+  const [y, m, d] = (isoDate || '').split('-').map(Number);
+  if (!y || !m || !d) {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
+  }
+  return new Date(y, m - 1, d, 12, 0, 0, 0);
+}
+
+export function addDaysIso(isoDate: string, days: number): string {
+  const d = parseLocalDateIso(isoDate);
+  d.setDate(d.getDate() + days);
+  return formatLocalDateIso(d);
+}
+
+export function getMondayOfIso(isoDate: string): string {
+  const d = parseLocalDateIso(isoDate);
+  const day = d.getDay(); // 0 = CN, 1 = T2..6 = T7
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  return formatLocalDateIso(d);
+}
+
+export function getVietDayCode(isoDate: string): string {
+  if (!isoDate) return '';
+  const d = parseLocalDateIso(isoDate);
+  return VIET_DAY_CODES[d.getDay()] || '';
+}
 
 export function formatMoney(amount: number, suffix = '\u00a0₫'): string {
   const num = Math.round(Number(amount) || 0);
@@ -37,15 +78,13 @@ export function formatDateDM(isoDate: string): string {
 
 export function getVietDayShort(isoDate: string): string {
   if (!isoDate) return '';
-  const d = new Date(isoDate + 'T00:00:00');
-  if (isNaN(d.getTime())) return '';
+  const d = parseLocalDateIso(isoDate);
   return VIET_DAYS[d.getDay()];
 }
 
 export function getVietDayFull(isoDate: string): string {
   if (!isoDate) return '';
-  const d = new Date(isoDate + 'T00:00:00');
-  if (isNaN(d.getTime())) return '';
+  const d = parseLocalDateIso(isoDate);
   return `${VIET_FULL_DAYS[d.getDay()]}, ${formatDateDMY(isoDate)}`;
 }
 
